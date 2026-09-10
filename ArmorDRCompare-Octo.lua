@@ -1,5 +1,5 @@
--- Armor DR Compare
--- WoW Classic Era / Hardcore 1.15.9 and TBC Anniversary 2.5.6
+-- Armor DR Compare (Octo)
+-- OctoWoW vanilla 1.12.1
 -- Version 1.3.0
 --
 -- Important Classic Era behavior:
@@ -21,10 +21,6 @@ local showArmorDelta = true
 
 -- Module-level so the slash command can reset it to force re-processing.
 local vanillaMonitorLastState = nil
-
-local IS_TBC = WOW_PROJECT_ID ~= nil
-    and WOW_PROJECT_BURNING_CRUSADE_CLASSIC ~= nil
-    and WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC
 
 local DRUID_CLASS_ID = "DRUID"
 local FORM_BEAR = 5
@@ -76,15 +72,7 @@ local function ArmorDR(armor, attackerLevel)
         armor = 0
     end
 
-    local denominatorConstant
-
-    -- Burning Crusade changes the armor constant at attacker level 60.
-    -- Era/Hardcore keeps the Vanilla formula through its level cap.
-    if IS_TBC and attackerLevel >= 60 then
-        denominatorConstant = (467.5 * attackerLevel) - 22167.5
-    else
-        denominatorConstant = 400 + (85 * attackerLevel)
-    end
+    local denominatorConstant = 400 + (85 * attackerLevel)
     local dr = armor / (armor + denominatorConstant)
 
     if dr > 0.75 then
@@ -145,42 +133,26 @@ local function GetThickHideMultiplier()
         return thickHideMultiplierCache
     end
 
-    local rank, maxRank = FindThickHideTalent()
+    local rank = FindThickHideTalent()
     local bonus = 0
 
     if rank and rank > 0 then
-        if IS_TBC or maxRank == 3 then
-            -- TBC ranks: 4%, 7%, 10%.
-            local tbcBonuses = { 0.04, 0.07, 0.10 }
-            bonus = tbcBonuses[rank] or 0.10
-        else
-            -- Vanilla ranks: 2%, 4%, 6%, 8%, 10%.
-            bonus = 0.02 * rank
-        end
+        -- Vanilla ranks: 2%, 4%, 6%, 8%, 10%.
+        bonus = 0.02 * rank
     elseif rank == nil and type(IsPlayerSpell) == "function" then
         -- Fallback for clients where the talent inspection API is unavailable.
-        if IS_TBC then
-            if SafeCall(IsPlayerSpell, 16931) then
-                bonus = 0.10
-            elseif SafeCall(IsPlayerSpell, 16930) then
-                bonus = 0.07
-            elseif SafeCall(IsPlayerSpell, 16929) then
-                bonus = 0.04
-            end
-        else
-            local classicRanks = {
-                { 16933, 0.10 },
-                { 16932, 0.08 },
-                { 16931, 0.06 },
-                { 16930, 0.04 },
-                { 16929, 0.02 },
-            }
+        local classicRanks = {
+            { 16933, 0.10 },
+            { 16932, 0.08 },
+            { 16931, 0.06 },
+            { 16930, 0.04 },
+            { 16929, 0.02 },
+        }
 
-            for _, talentRank in ipairs(classicRanks) do
-                if SafeCall(IsPlayerSpell, talentRank[1]) then
-                    bonus = talentRank[2]
-                    break
-                end
+        for _, talentRank in ipairs(classicRanks) do
+            if SafeCall(IsPlayerSpell, talentRank[1]) then
+                bonus = talentRank[2]
+                break
             end
         end
     end
@@ -200,14 +172,8 @@ local function GetArmorFormMultiplier()
     if formID == FORM_BEAR then
         return 2.8, "Bear Form"
     elseif formID == FORM_DIRE_BEAR then
-        if IS_TBC then
-            return 5.0, "Dire Bear Form"
-        end
         return 4.6, "Dire Bear Form"
     elseif formID == FORM_MOONKIN then
-        if IS_TBC then
-            return 5.0, "Moonkin Form"
-        end
         return 4.6, "Moonkin Form"
     end
 
@@ -1053,12 +1019,10 @@ SlashCmdList.ARMORDRCOMPARE = function(msg)
         local wowVersion, build, buildDate, interfaceVersion = GetBuildInfo()
         local armor, level = GetPlayerArmorAndLevel()
         local dr = armor and level and ArmorDR(armor, level)
-        local clientName = IS_TBC and "TBC Anniversary" or "Classic Era / Hardcore"
 
         print(string.format(
-            "|cff00ff00Armor DR Compare|r v%s | %s | WoW %s | build %s | interface %s",
+            "|cff00ff00Armor DR Compare|r v%s | OctoWoW 1.12.1 | WoW %s | build %s | interface %s",
             VERSION,
-            clientName,
             tostring(wowVersion),
             tostring(build),
             tostring(interfaceVersion)
