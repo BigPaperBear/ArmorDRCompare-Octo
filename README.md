@@ -1,12 +1,10 @@
 # Armor DR Compare (Octo) v1.3.0
 
-Ported for OctoWoW (private vanilla WoW 1.12.1 server, TurtleWoW-based).
+Ported for OctoWoW
 
 Original addon by **alikara**: https://www.curseforge.com/wow/addons/armor-dr-compare
 
 ## Install
-
-Delete the old `ArmorDRCompare-Octo` folder first.
 
 Extract this addon so the files are exactly here:
 
@@ -14,7 +12,7 @@ Extract this addon so the files are exactly here:
 World of Warcraft\Interface\AddOns\ArmorDRCompare-Octo\ArmorDRCompare-Octo.toc
 ```
 
-Then `/reload` or restart the game.
+Then restart the game.
 
 ## What it does
 
