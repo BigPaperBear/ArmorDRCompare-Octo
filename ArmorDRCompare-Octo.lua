@@ -1006,9 +1006,9 @@ SlashCmdList.ARMORDRCOMPARE = function(msg)
         end
 
         local modeName = showArmorDelta
-            and "|cff00ff00full|r  (±Armor DR%)"
-            or  "|cff00ff00DR only|r (csak %DR)"
-        print("|cff00ff00Armor DR Compare:|r mód: " .. modeName)
+            and "|cff00ff00full|r  (+-Armor DR%)"
+            or  "|cff00ff00DR only|r (%DR)"
+        print("|cff00ff00Armor DR Compare:|r mode: " .. modeName)
 
         vanillaMonitorLastState = nil
         RefreshVisibleComparisons()
