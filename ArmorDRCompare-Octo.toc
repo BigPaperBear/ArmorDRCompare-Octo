@@ -1,4 +1,4 @@
-## Interface: 11200, 11509
+## Interface: 11200
 ## Title: Armor DR Compare (Octo)
 ## Notes: Adds physical damage-reduction change next to Armor differences in Classic Era, Hardcore, and vanilla item comparison tooltips. Ported for OctoWoW (vanilla 1.12.1).
 ## Author: OpenAI
