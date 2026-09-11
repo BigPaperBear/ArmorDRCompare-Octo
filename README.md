@@ -1,5 +1,7 @@
 # Armor DR Compare (Octo) v1.3.0
 
+[![Downloads](https://img.shields.io/github/downloads/BigPaperBear/ArmorDRCompare-Octo/total?style=flat-square&label=Downloads)](https://github.com/BigPaperBear/ArmorDRCompare-Octo/releases)
+
 Ported for OctoWoW
 
 Original addon by **alikara**: https://www.curseforge.com/wow/addons/armor-dr-compare
